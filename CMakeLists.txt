@@ -23,22 +23,6 @@ else()
   set(CMAKE_BINARY_DIR ${CMAKE_HOME_DIRECTORY}/build/bin)
 endif()
 
-# Project executable
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-target_include_directories(
-  ${PROJECT_NAME}
-  PRIVATE ${CMAKE_SOURCE_DIR}/external
-          ${CMAKE_SOURCE_DIR}/src
-)
-add_subdirectory(src)
-
-include(tools/cmake/Libs.cmake)
-add_subdirectory(libs)
-target_link_libraries(${PROJECT_NAME}
-  PUBLIC
-  Custom::libsample
-)
-
 # Advanced compilation options
 option(ENABLE_TESTS "Compile and run unit tests" ON)
 option(ENABLE_DOCUMENTATION "Build documentation target" ON)
@@ -57,14 +41,30 @@ if(ENABLE_COVERAGE)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
+if(ENABLE_DOCUMENTATION)
+  message("## Enable documentation target")
+  include(tools/cmake/Documentation.cmake)
+endif()
+
+# Project executable
+add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE ${CMAKE_SOURCE_DIR}/external
+          ${CMAKE_SOURCE_DIR}/src
+)
+add_subdirectory(src)
+
+include(tools/cmake/Libs.cmake)
+add_subdirectory(libs)
+target_link_libraries(${PROJECT_NAME}
+  PUBLIC
+  Custom::libsample
+)
+
 if(ENABLE_TESTS)
   message("## Enable unit tests target")
   include(tools/cmake/Tests.cmake)
   enable_testing()
   add_subdirectory(tests)
-endif()
-
-if(ENABLE_DOCUMENTATION)
-  message("## Enable documentation target")
-  include(tools/cmake/Documentation.cmake)
 endif()
