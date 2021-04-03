@@ -4,8 +4,8 @@ find_package(GLUT REQUIRED)
 # Game of Life executable
 set(EXECUTABLE_GAME game-of-life)
 add_executable(${EXECUTABLE_GAME} 
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/GameOfLife.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/GameOfLife.cpp
 )
 
 target_include_directories(
@@ -17,13 +17,14 @@ target_link_libraries(${EXECUTABLE_GAME}
   PUBLIC
     ${GLUT_LIBRARIES}
     ${OPENGL_LIBRARIES}
+    Custom::libsample
 )
 
 
 # Random dots executable
 set(EXECUTABLE_RANDOM random)
 add_executable(${EXECUTABLE_RANDOM} 
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/random.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/random.cpp
 )
 
 target_link_libraries(${EXECUTABLE_RANDOM}
