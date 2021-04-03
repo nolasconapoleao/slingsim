@@ -1,51 +1,87 @@
-#include <GL/freeglut.h> 
-#include <stdlib.h> 
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 
-constexpr auto cWindowWidth = 640;
-constexpr auto cWindowHeight = 480;
+#include <iostream>
 
-int x, y;
-float r, g, b;
+#include "GameOfLife.h"
 
-void idle()
-{                    
-    x = rand()%cWindowWidth; 
-    y = rand()%cWindowHeight;
+constexpr GLfloat cWhite[3] {1.0, 1.0, 1.0};
+constexpr GLfloat cBlack[3] {0.0, 0.0, 0.0};
 
-    r=(float)((rand() % 9))/8;
-    g=(float)((rand() % 9))/8;
-    b=(float)((rand() % 9))/8;
+constexpr GLint FPS = 1;
+constexpr GLint cWindow_width = 600;
+constexpr GLint cWindow_height = 600;
+constexpr GLfloat xSize = 1.0 / cWidth_game;
+constexpr GLfloat ySize = 1.0 / cHeight_game;
 
-    glutPostRedisplay();
+GameOfLife game;
+
+void render() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	
+	glBegin(GL_QUADS);
+	for (GLint x = 0; x < cWidth_game; ++x) {
+		for (GLint y = 0; y < cHeight_game; ++y) {
+            game.at(x, y) ? glColor3fv(cWhite): glColor3fv(cBlack);
+            
+			glVertex2f(    x*xSize,     y*ySize);
+			glVertex2f((x+1)*xSize,     y*ySize);
+			glVertex2f((x+1)*xSize, (y+1)*ySize);
+			glVertex2f(    x*xSize, (y+1)*ySize);
+		}
+	}
+	glEnd();
+    	
+	glFlush();
+	glutSwapBuffers();
 }
 
-void magic_dots(void)
-{
+void reshape(int width, int height) {
+	glViewport(0, 0, width, height);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, cWindowWidth, 0.0, cWindowHeight);
+	gluOrtho2D(0.0, 1.0, 0.0, 1.0);
 
-	glColor3f(r,g,b); 	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-	glBegin(GL_POINTS);
-	glVertex2i (x,y);
-	glEnd();
-
-	glFlush();	
+	glutPostRedisplay();
 }
 
+void update(int) {
+	game.update();
 
-int main(int argc,char** argv)
-{
-	glutInit(&argc,argv);
-	glutInitDisplayMode(GLUT_SINGLE);
-	glutInitWindowSize(cWindowWidth, cWindowHeight);
-	glutCreateWindow("Randomly generated points");
-	glClearColor(0,0,0,0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glutDisplayFunc(magic_dots);
-	glutIdleFunc(idle);
+	glutPostRedisplay();
+	glutTimerFunc(1000 / FPS, update, 0);
+}
+
+void initOpenGl() {
+    int argc = 0;
+    char** argv;
+    glutInit(&argc, argv);
+
+	glutInitWindowSize(cWindow_width, cWindow_height);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("Game of Life");
+	glClearColor(1, 1, 1, 1);
+
+	glutReshapeFunc(reshape);
+	glutDisplayFunc(render);
+
+	update(0);
 	glutMainLoop();
-	
-	return 0;
+}
+
+int main() {
+    initOpenGl();
+
+    // Console render
+    // while(true) {
+    //     game.loop();
+    // }
+		
+  	return 0;
 }
