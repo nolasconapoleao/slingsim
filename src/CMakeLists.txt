@@ -4,8 +4,8 @@ find_package(GLUT REQUIRED)
 # Game of Life executable
 set(EXECUTABLE_GAME game-of-life)
 add_executable(
-  ${EXECUTABLE_GAME} ${CMAKE_CURRENT_SOURCE_DIR}/game.cpp
-                     ${CMAKE_CURRENT_SOURCE_DIR}/GameOfLife.cpp
+  ${EXECUTABLE_GAME} ${CMAKE_CURRENT_SOURCE_DIR}/game-of-life/game.cpp
+                     ${CMAKE_CURRENT_SOURCE_DIR}/game-of-life/GameOfLife.cpp
 )
 
 target_include_directories(
