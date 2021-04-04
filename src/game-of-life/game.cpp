@@ -16,6 +16,13 @@ constexpr GLfloat ySize = 1.0 / cHeight_game;
 
 GameOfLife game;
 
+void drawRectangle(int x, int y) {
+  glVertex2f(x * xSize, y * ySize);
+  glVertex2f((x + 1) * xSize, y * ySize);
+  glVertex2f((x + 1) * xSize, (y + 1) * ySize);
+  glVertex2f(x * xSize, (y + 1) * ySize);
+}
+
 void render() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
@@ -24,11 +31,7 @@ void render() {
   for (GLint x = 0; x < cWidth_game; ++x) {
     for (GLint y = 0; y < cHeight_game; ++y) {
       game.at(x, y) ? glColor3fv(cWhite) : glColor3fv(cBlack);
-
-      glVertex2f(x * xSize, y * ySize);
-      glVertex2f((x + 1) * xSize, y * ySize);
-      glVertex2f((x + 1) * xSize, (y + 1) * ySize);
-      glVertex2f(x * xSize, (y + 1) * ySize);
+      drawRectangle(x, y);
     }
   }
   glEnd();
