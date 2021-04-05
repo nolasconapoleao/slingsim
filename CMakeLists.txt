@@ -50,17 +50,13 @@ endif()
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 target_include_directories(
   ${PROJECT_NAME}
-  PRIVATE ${CMAKE_SOURCE_DIR}/external
-          ${CMAKE_SOURCE_DIR}/src
+  PRIVATE ${CMAKE_SOURCE_DIR}/external ${CMAKE_SOURCE_DIR}/src
 )
 add_subdirectory(src)
 
 include(tools/cmake/Libs.cmake)
 add_subdirectory(libs)
-target_link_libraries(${PROJECT_NAME}
-  PUBLIC
-  Custom::libsample
-)
+target_link_libraries(${PROJECT_NAME} PUBLIC Custom::libsample Input::inputhandler)
 
 if(ENABLE_TESTS)
   message("## Enable unit tests target")
