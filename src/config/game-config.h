@@ -4,4 +4,4 @@ void initGame();
 
 void loadInputHandler();
 void loadRenderer();
-void loadUpdater();
+void loadReshaper();

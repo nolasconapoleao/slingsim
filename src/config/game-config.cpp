@@ -1,46 +1,137 @@
 #include "config/game-config.h"
 
 #include <GL/freeglut.h>
+#include <iostream>
+#include <math.h>
 
 #include "game-settings.h"
 
-int x, y;
-float r, g, b;
+GLfloat colour[3]{0.0, 1.0, 0.0};
+const float radius = 0.02;
+
+float step = 0.01;
+float xC = 0.5, yC = 0.5;
+float vY = 0, aY = -.005;
+float vX = 0, aX = 0.0;
+
+void updateColor() {
+  colour[0] = (float)((rand() % 9)) / 8;
+  colour[1] = (float)((rand() % 9)) / 8;
+  colour[2] = (float)((rand() % 9)) / 8;
+}
+
+void handleKeyPress(int key, int, int) {
+  std::cout << "key: " << key << "\n";
+  switch (key) {
+    case GLUT_KEY_UP:
+      vY += step;
+      break;
+    case GLUT_KEY_DOWN:
+      vY -= step;
+      break;
+    case GLUT_KEY_LEFT:
+      vX -= step;
+      break;
+    case GLUT_KEY_RIGHT:
+      vX += step;
+      break;
+  }
+}
+
+bool stopped = false;
+void handleClick(int, int state, int x, int y) {
+  std::cout << "x: " << x << " ,y: " << y << "\n";
+  if (state == 0) {
+    stopped = false;
+    xC = float(x) / cWindowWidth;
+    yC = float(cWindowHeight - y) / cWindowHeight;
+    vY = 0;
+    aY = -.005;
+  }
+}
+
+void updatePosition() {
+  if (!stopped) {
+    yC += vY;
+    vY += aY;
+    xC += vX;
+    vX += aX;
+  }
+
+  if (yC < radius) {
+    yC *= -1;
+    vY *= -0.8;
+    if (vY < 0.0001) {
+      vY = 0.0;
+      yC = radius;
+      stopped = true;
+    } else {
+      updateColor();
+    }
+  }
+}
+
+void reshape(int width, int height) {
+  glViewport(0, 0, width, height);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluOrtho2D(0.0, 1.0, 0.0, 1.0);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  glutPostRedisplay();
+}
+
+void drawCircle(float xCenter, float yCenter) {
+  glBegin(GL_TRIANGLES);
+  float x, y;
+  for (double i = 0; i <= 360;) {
+    x = radius * cos(i);
+    y = radius * sin(i);
+    glVertex2f(x + xCenter, y + yCenter);
+    i = i + .5;
+    x = radius * cos(i);
+    y = radius * sin(i);
+    glVertex2f(x + xCenter, y + yCenter);
+    glVertex2f(xCenter, yCenter);
+    i = i + .5;
+  }
+  glEnd();
+}
+
+void display() {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
+  glColor3fv(colour);
+  drawCircle(xC, yC);
+
+  glFlush();
+  glutSwapBuffers();
+}
+
+// TODO: Code above should be replaced by library calls
+
+void looper(int) {
+  updatePosition();
+
+  glutPostRedisplay();
+  glutTimerFunc(1000 / FPS, looper, 0);
+}
 
 void loadInputHandler() {
+  glutMouseFunc(handleClick);
+  glutSpecialFunc(handleKeyPress);
 }
 
 void loadRenderer() {
-  const auto magicDots = []() {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0.0, cWindowWidth, 0.0, cWindowHeight);
-
-    glColor3f(r, g, b);
-
-    glBegin(GL_POINTS);
-    glVertex2i(x, y);
-    glEnd();
-
-    glFlush();
-  };
-
-  glutDisplayFunc(magicDots);
+  glutDisplayFunc(display);
 }
 
-void loadUpdater() {
-  const auto idle = []() {
-    x = rand() % cWindowWidth;
-    y = rand() % cWindowHeight;
-
-    r = (float)((rand() % 9)) / 8;
-    g = (float)((rand() % 9)) / 8;
-    b = (float)((rand() % 9)) / 8;
-
-    glutPostRedisplay();
-  };
-
-  glutIdleFunc(idle);
+void loadReshaper() {
+  glutReshapeFunc(reshape);
 }
 
 void initGame() {
@@ -56,7 +147,8 @@ void initGame() {
 
   loadInputHandler();
   loadRenderer();
-  loadUpdater();
+  loadReshaper();
 
+  looper(0);
   glutMainLoop();
 }
