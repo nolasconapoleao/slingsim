@@ -1,9 +1,7 @@
-#include <iostream>
-
-#include "libsample/MathUtils.h"
+#include "config/game-config.h"
 
 int main() {
-  std::cout << MathUtils::random(0, 33);
+  initGame();
 
   return 0;
 }
