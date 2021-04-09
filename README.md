@@ -1,5 +1,5 @@
 # Slingsim
-[![Build Status](https://travis-ci.org/nolasconapoleao/slingsim.svg?branch=develop)](https://travis-ci.org/nolasconapoleao/slingsim)
+[![Build Status](https://travis-ci.org/nolasconapoleao/slingsim.svg?branch=master)](https://travis-ci.org/nolasconapoleao/slingsim)
 
 A project to experiment with OpenGl.<br/><br/>
 

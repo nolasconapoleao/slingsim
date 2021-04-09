@@ -72,6 +72,8 @@ void updatePosition() {
 }
 
 void reshape(int width, int height) {
+  cWindowWidth = width;
+  cWindowHeight = height;
   glViewport(0, 0, width, height);
 
   glMatrixMode(GL_PROJECTION);
@@ -86,17 +88,14 @@ void reshape(int width, int height) {
 
 void drawCircle(float xCenter, float yCenter) {
   glBegin(GL_TRIANGLES);
-  float x, y;
+  float x = radius, y = 0;
   for (double i = 0; i <= 360;) {
-    x = radius * cos(i);
-    y = radius * sin(i);
     glVertex2f(x + xCenter, y + yCenter);
     i = i + .5;
     x = radius * cos(i);
     y = radius * sin(i);
     glVertex2f(x + xCenter, y + yCenter);
     glVertex2f(xCenter, yCenter);
-    i = i + .5;
   }
   glEnd();
 }

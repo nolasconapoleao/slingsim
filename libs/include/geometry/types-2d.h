@@ -9,7 +9,7 @@ struct Point2d {
 };
 
 using Triangle2d = Point2d[3];
-using Line2d = Point2d[3];
+using Line2d = Point2d[2];
 using Poligon2d = std::vector<Point2d>;
 
 struct Circle2d {
