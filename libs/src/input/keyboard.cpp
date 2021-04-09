@@ -1,10 +1,10 @@
 #pragma once
 
-#include "inputhandler/keyboard.h"
+#include "input/keyboard.h"
 
 #include <GL/glut.h>
 
-namespace inputhandler {
+namespace input {
 
 KeyEvent captureArrowEvent(int key, int x, int y) {
   KeyCode code;
@@ -55,4 +55,4 @@ KeyEvent captureKeyEvent(unsigned char key, int x, int y) {
   return KeyEvent{code, x, y};
 }
 
-}; // namespace inputhandler
+}; // namespace input

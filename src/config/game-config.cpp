@@ -11,8 +11,9 @@ const float radius = 0.02;
 
 float step = 0.01;
 float xC = 0.5, yC = 0.5;
-float vY = 0, aY = -.005;
+float vY = 0, aY = -0.005;
 float vX = 0, aX = 0.0;
+constexpr auto amortizationCoef = 0.8;
 
 void updateColor() {
   colour[0] = (float)((rand() % 9)) / 8;
@@ -38,37 +39,53 @@ void handleKeyPress(int key, int, int) {
   }
 }
 
-bool stopped = false;
-void handleClick(int, int state, int x, int y) {
+int xDrag, yDrag;
+int xDrop, yDrop;
+void handleClick(int key, int state, int x, int y) {
   std::cout << "x: " << x << " ,y: " << y << "\n";
-  if (state == 0) {
-    stopped = false;
+  if (key != 0 && state == 0) {
     xC = float(x) / cWindowWidth;
     yC = float(cWindowHeight - y) / cWindowHeight;
-    vY = 0;
-    aY = -.005;
+  }
+
+  if (key == 0) {
+    if (state == 0) {
+      xDrag = x;
+      yDrag = y;
+    } else {
+      xDrop = x;
+      yDrop = y;
+      vX = float(xDrop - xDrag) / cWindowWidth;
+      vY = float(yDrag - yDrop) / cWindowHeight;
+    }
   }
 }
 
 void updatePosition() {
-  if (!stopped) {
-    yC += vY;
-    vY += aY;
-    xC += vX;
-    vX += aX;
+  if (yC < radius) {
+    vY *= -amortizationCoef;
+    yC = radius;
+    updateColor();
+  } else if (yC > 1 - radius) {
+    vY *= -amortizationCoef;
+    yC = 1 - radius;
+    updateColor();
   }
 
-  if (yC < radius) {
-    yC *= -1;
-    vY *= -0.8;
-    if (vY < 0.0001) {
-      vY = 0.0;
-      yC = radius;
-      stopped = true;
-    } else {
-      updateColor();
-    }
+  if (xC < radius) {
+    vX *= -amortizationCoef;
+    xC = radius;
+    updateColor();
+  } else if (xC > 1 - radius) {
+    vX *= -amortizationCoef;
+    xC = 1 - radius;
+    updateColor();
   }
+
+  yC += vY;
+  vY += aY;
+  xC += vX;
+  vX += aX;
 }
 
 void reshape(int width, int height) {
@@ -120,7 +137,7 @@ void looper(int) {
   glutTimerFunc(1000 / FPS, looper, 0);
 }
 
-void loadInputHandler() {
+void loadinput() {
   glutMouseFunc(handleClick);
   glutSpecialFunc(handleKeyPress);
 }
@@ -144,7 +161,7 @@ void initGame() {
   glClearColor(0, 0, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  loadInputHandler();
+  loadinput();
   loadRenderer();
   loadReshaper();
 

@@ -2,6 +2,6 @@
 
 void initGame();
 
-void loadInputHandler();
+void loadinput();
 void loadRenderer();
 void loadReshaper();

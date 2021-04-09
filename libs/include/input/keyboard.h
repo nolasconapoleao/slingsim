@@ -1,8 +1,8 @@
 #pragma once
 
-#include "inputhandler/events.h"
+#include "input/events.h"
 
-namespace inputhandler {
+namespace input {
 
 /**
  * @brief Captures arrow in keyboard event.
@@ -26,4 +26,4 @@ KeyEvent captureArrowEvent(int key, int x, int y);
  */
 KeyEvent captureKeyEvent(unsigned char key, int x, int y);
 
-}; // namespace inputhandler
+}; // namespace input

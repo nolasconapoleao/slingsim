@@ -47,16 +47,17 @@ if(ENABLE_DOCUMENTATION)
 endif()
 
 # Project executable
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-target_include_directories(
-  ${PROJECT_NAME}
-  PRIVATE ${CMAKE_SOURCE_DIR}/external ${CMAKE_SOURCE_DIR}/src
-)
+add_executable(${PROJECT_NAME})
 add_subdirectory(src)
 
 include(tools/cmake/Libs.cmake)
 add_subdirectory(libs)
-target_link_libraries(${PROJECT_NAME} PUBLIC Custom::libsample Input::inputhandler)
+
+# Link project libraries
+find_package(GLUT REQUIRED)
+find_package(OpenGL REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC Custom::libsample Input::input)
 
 if(ENABLE_TESTS)
   message("## Enable unit tests target")

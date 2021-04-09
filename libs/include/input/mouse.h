@@ -1,8 +1,8 @@
 #pragma once
 
-#include "inputhandler/events.h"
+#include "input/events.h"
 
-namespace inputhandler {
+namespace input {
 
 /**
  * @brief Captures mouse click event.
@@ -16,4 +16,4 @@ namespace inputhandler {
  */
 MouseEvent captureMouseEvent(int key, int pressed, int x, int y);
 
-}; // namespace inputhandler
+}; // namespace input

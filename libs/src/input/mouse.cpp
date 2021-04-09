@@ -1,10 +1,10 @@
 #pragma once
 
-#include "inputhandler/mouse.h"
+#include "input/mouse.h"
 
 #include "game-settings.h"
 
-namespace inputhandler {
+namespace input {
 /**
  * @brief Remaps the coordinates of the key event.
  *
@@ -42,4 +42,4 @@ void remap(MouseEvent event) {
   event.x = float(cWindowHeight - event.y) / cWindowHeight;
 }
 
-}; // namespace inputhandler
+}; // namespace input

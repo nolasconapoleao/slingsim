@@ -1,2 +1,2 @@
 add_subdirectory(libsample)
-add_subdirectory(inputhandler)
+add_subdirectory(input)

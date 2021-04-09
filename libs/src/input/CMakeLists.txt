@@ -1,4 +1,4 @@
 target_sources(
-  inputhandler
+  input
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/keyboard.cpp ${CMAKE_CURRENT_SOURCE_DIR}/mouse.cpp
 )
