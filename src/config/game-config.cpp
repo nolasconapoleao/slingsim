@@ -5,20 +5,23 @@
 #include <math.h>
 
 #include "game-settings.h"
+#include "graphics/draw.h"
 
-GLfloat colour[3]{0.0, 1.0, 0.0};
-const float radius = 0.02;
+constexpr float radius = 0.02;
 
 float step = 0.01;
-float xC = 0.5, yC = 0.5;
+constexpr float xC = 0.5, yC = 0.5;
 float vY = 0, aY = -0.005;
 float vX = 0, aX = 0.0;
 constexpr auto amortizationCoef = 0.8;
 
+Colour color;
+Circle2d ball{Point2d{xC, yC}, radius};
+
 void updateColor() {
-  colour[0] = (float)((rand() % 9)) / 8;
-  colour[1] = (float)((rand() % 9)) / 8;
-  colour[2] = (float)((rand() % 9)) / 8;
+  color.r = (float)((rand() % 9)) / 8;
+  color.g = (float)((rand() % 9)) / 8;
+  color.b = (float)((rand() % 9)) / 8;
 }
 
 void handleKeyPress(int key, int, int) {
@@ -44,8 +47,8 @@ int xDrop, yDrop;
 void handleClick(int key, int state, int x, int y) {
   std::cout << "x: " << x << " ,y: " << y << "\n";
   if (key != 0 && state == 0) {
-    xC = float(x) / cWindowWidth;
-    yC = float(cWindowHeight - y) / cWindowHeight;
+    ball.center.x = float(x) / cWindowWidth;
+    ball.center.y = float(cWindowHeight - y) / cWindowHeight;
   }
 
   if (key == 0) {
@@ -62,29 +65,29 @@ void handleClick(int key, int state, int x, int y) {
 }
 
 void updatePosition() {
-  if (yC < radius) {
+  if (ball.center.y < radius) {
     vY *= -amortizationCoef;
-    yC = radius;
+    ball.center.y = radius;
     updateColor();
-  } else if (yC > 1 - radius) {
+  } else if (ball.center.y > 1 - radius) {
     vY *= -amortizationCoef;
-    yC = 1 - radius;
+    ball.center.y = 1 - radius;
     updateColor();
   }
 
-  if (xC < radius) {
+  if (ball.center.x < radius) {
     vX *= -amortizationCoef;
-    xC = radius;
+    ball.center.x = radius;
     updateColor();
-  } else if (xC > 1 - radius) {
+  } else if (ball.center.x > 1 - radius) {
     vX *= -amortizationCoef;
-    xC = 1 - radius;
+    ball.center.x = 1 - radius;
     updateColor();
   }
 
-  yC += vY;
+  ball.center.y += vY;
   vY += aY;
-  xC += vX;
+  ball.center.x += vX;
   vX += aX;
 }
 
@@ -103,26 +106,11 @@ void reshape(int width, int height) {
   glutPostRedisplay();
 }
 
-void drawCircle(float xCenter, float yCenter) {
-  glBegin(GL_TRIANGLES);
-  float x = radius, y = 0;
-  for (double i = 0; i <= 360;) {
-    glVertex2f(x + xCenter, y + yCenter);
-    i = i + .5;
-    x = radius * cos(i);
-    y = radius * sin(i);
-    glVertex2f(x + xCenter, y + yCenter);
-    glVertex2f(xCenter, yCenter);
-  }
-  glEnd();
-}
-
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
-  glColor3fv(colour);
-  drawCircle(xC, yC);
+  draw(ball, color);
 
   glFlush();
   glutSwapBuffers();
