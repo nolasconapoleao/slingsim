@@ -151,7 +151,7 @@ void loadReshaper() {
 }
 
 void initGame() {
-  int argc = 1;
+  int argc = 0;
   char *argv;
 
   glutInit(&argc, &argv);
