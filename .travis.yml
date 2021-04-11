@@ -20,6 +20,7 @@ addons:
     - libglm-dev
     - mesa-utils
     - freeglut3-dev
+    - libxi-dev
     update: true
 
 script:
