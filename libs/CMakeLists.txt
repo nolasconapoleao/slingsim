@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 create_lib(graphics2d Graphics::graphics2d)
+=======
+create_lib(libsample Custom::libsample)
+create_lib(geometry Geometry::geometry)
+>>>>>>> Implement geometry lib
 create_lib(input Input::input)
 create_lib(libsample Custom::libsample)
 

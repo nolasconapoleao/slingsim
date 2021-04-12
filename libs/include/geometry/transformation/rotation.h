@@ -9,4 +9,4 @@
  * @param c center of rotation
  * @param angle rotation angle (in radians), positive means anti ccw rotation
  */
-void rotate(Point2d p, Point2d c, float angle);
+void rotate(Point2d &p, const Point2d &c, float angle);

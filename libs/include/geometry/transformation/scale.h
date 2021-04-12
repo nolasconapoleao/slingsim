@@ -6,7 +6,7 @@
  * @brief Scales a point using scaling factor.
  *
  * @param p Point to scale
- * @param r scaling point reference
+ * @param s scaling point reference
  * @param factor scaling factor
  */
-void scale(Point2d p, Point2d r, float factor);
+void scale(Point2d &p, const Point2d &s, float factor);
