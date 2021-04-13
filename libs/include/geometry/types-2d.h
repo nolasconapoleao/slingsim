@@ -5,9 +5,9 @@
 /// @brief Two Dimensional Point.
 struct Point2d {
   /// @brief Coordinate in x axis.
-  float x;
+  float x = 0;
   /// @brief Coordinate in y axis.
-  float y;
+  float y = 0;
 
   /// @brief Distance of point to origin.
   float m = 0;
@@ -25,8 +25,8 @@ struct Circle2d {
 };
 
 struct Vector2d {
-  float dx;
-  float dy;
+  float dx = 0;
+  float dy = 0;
 
   float m = 0;
   float a = 0;

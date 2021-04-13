@@ -38,25 +38,25 @@ TEST_CASE("Line collision", "[geometry][collision][object]") {
   REQUIRE(collision::collides(inside, cLine));
 }
 
-// TODO(nn): Optimization of triangle collision causes failed tests
-// const Triangle2d cTriangle {Point2d{0.2, 0.2}, Point2d{0.4, 0.2}, Point2d{0.4, 0.4}};
-// TEST_CASE("Triangle collision", "[geometry][collision][object]") {
-//   auto outside = GENERATE(Point2d{-0.1, 0}, Point2d{0.3, 0.5}, Point2d{0, 1.1});
-//   REQUIRE_FALSE(collision::collides(outside, cTriangle));
+// TODO(nn): Optimization of triangle collision may cause failed tests
+const Triangle2d cTriangle{Point2d{0.2, 0.2}, Point2d{0.4, 0.2}, Point2d{0.4, 0.4}};
+TEST_CASE("Triangle collision", "[geometry][collision][object]") {
+  auto outside = GENERATE(Point2d{-0.1, 0}, Point2d{0.3, 0.5}, Point2d{0, 1.1});
+  REQUIRE_FALSE(collision::collides(outside, cTriangle));
 
-//   auto inside = GENERATE(Point2d{0.3, 0.3}, Point2d{0.25, 0.35});
-//   REQUIRE(collision::collides(inside, cTriangle));
-// }
+  auto inside = GENERATE(Point2d{0.3, 0.3}, Point2d{0.25, 0.35});
+  REQUIRE(collision::collides(inside, cTriangle));
+}
 
-// const Triangle2d cTriangle2 {Point2d{0.2, 0.2}, Point2d{0.2, 0.4}, Point2d{0.4, 0.4}};
-// const Poligon2d cPoligon {cTriangle, cTriangle2};
-// TEST_CASE("Poligon collision", "[geometry][collision][object]") {
-//   auto outside = GENERATE(Point2d{-0.1, 0}, Point2d{0.3, 0.5}, Point2d{0, 1.1});
-//   REQUIRE_FALSE(collision::collides(outside, cTriangle));
+const Triangle2d cTriangle2{Point2d{0.2, 0.2}, Point2d{0.2, 0.4}, Point2d{0.4, 0.4}};
+const Poligon2d cPoligon{cTriangle, cTriangle2};
+TEST_CASE("Poligon collision", "[geometry][collision][object]") {
+  auto outside = GENERATE(Point2d{-0.1, 0}, Point2d{0.3, 0.5}, Point2d{0, 1.1});
+  REQUIRE_FALSE(collision::collides(outside, cTriangle));
 
-//   auto inside = GENERATE(Point2d{0.3, 0.3}, Point2d{0.25, 0.35});
-//   REQUIRE(collision::collides(inside, cTriangle));
-// }
+  auto inside = GENERATE(Point2d{0.3, 0.3}, Point2d{0.25, 0.35});
+  REQUIRE(collision::collides(inside, cTriangle));
+}
 
 const Circle2d cCircle{Point2d{0.2, 0.2}, 0.1};
 TEST_CASE("Circle-point collision", "[geometry][collision][object]") {
