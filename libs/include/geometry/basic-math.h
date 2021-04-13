@@ -3,6 +3,7 @@
 #include "geometry/types.h"
 
 constexpr float cPi = 3.141593;
+constexpr float cTolerance = 0.002;
 
 Vector2d operator-(const Point2d &p1, const Point2d &p2);
 Point2d operator+(const Point2d &p, const Vector2d &v);

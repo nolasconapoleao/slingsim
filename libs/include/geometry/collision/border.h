@@ -4,7 +4,7 @@
 
 namespace collision {
 
-bool collides(const Point2d point);
-bool collides(const Circle2d circle);
+bool outside(const Point2d point);
+bool outside(const Circle2d circle);
 
 } // namespace collision
