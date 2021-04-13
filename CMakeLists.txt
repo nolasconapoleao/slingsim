@@ -41,12 +41,15 @@ endif()
 
 # Copying the dependent binaries to the BIN folder
 if(WIN32)
-	add_custom_target( Copyall ALL DEPENDS "${CMAKE_BINARY_DIR}/Dependencies")
+  add_custom_target(Copyall ALL DEPENDS "${CMAKE_BINARY_DIR}/Dependencies")
 
-	add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/Dependencies"
-					   COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:freeglut>" "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:freeglut>"
-					   COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:slingsim>" "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:slingsim>"
-					   DEPENDS freeglut slingsim
-					   VERBATIM)
+  add_custom_command(
+    OUTPUT "${CMAKE_BINARY_DIR}/Dependencies"
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:freeglut>"
+            "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:freeglut>"
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:slingsim>"
+            "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:slingsim>"
+    DEPENDS freeglut slingsim
+    VERBATIM
+  )
 endif()
-

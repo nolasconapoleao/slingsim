@@ -1,10 +1,13 @@
 # Dependencies
-set(FETCHCONTENT_BASE_DIR "${CMAKE_BINARY_DIR}/external/Freeglut" CACHE STRING "Overrides FETCHCONTENT_BASE_DIR variable")
+set(FETCHCONTENT_BASE_DIR
+    "${CMAKE_BINARY_DIR}/external/Freeglut"
+    CACHE STRING "Overrides FETCHCONTENT_BASE_DIR variable"
+)
 include(FetchContent)
 FetchContent_Declare(
   Freeglut
   SOURCE_DIR "${CMAKE_HOME_DIRECTORY}/external/Freeglut"
-  SVN_REPOSITORY  "http://svn.code.sf.net/p/freeglut/code/trunk/freeglut/freeglut"
+  SVN_REPOSITORY "http://svn.code.sf.net/p/freeglut/code/trunk/freeglut/freeglut"
 )
 
 FetchContent_GetProperties(Freeglut POPULATED FREEGLUT_POPULATED)
