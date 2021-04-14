@@ -12,8 +12,6 @@ void flipVertical(Point2d &p, float yAxis) {
 }
 
 void flipLine(Point2d &p, const Line2d &line) {
-  Point2d m = mid({line[0], line[1]});
-  Vector2d normal = crossProduct(line[0] - line[1]);
-  float alpha = angle(p - m, normal);
-  rotate(p, m, cPi - 2 * alpha);
+  float alpha = angle(p, line[0], line[1]);
+  rotate(p, line[0], 2 * alpha);
 }

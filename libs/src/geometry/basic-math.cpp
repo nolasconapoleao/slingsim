@@ -47,12 +47,16 @@ float dotProduct(const Vector2d &a, const Vector2d &b) {
   return a.dx * b.dy + b.dx * a.dy;
 }
 
-void udpateCircular(Vector2d &v) {
-  v.m = sqrt(pow(v.dx, 2) + pow(v.dy, 2));
-  v.a = atan2(v.dx, v.dy);
+Circular2d toCircular(Cartesian2d &ca) {
+  Circular2d ci;
+  ci.m = sqrt(pow(ca.x, 2) + pow(ca.y, 2));
+  ci.a = atan2(ca.y, ca.x);
+  return ci;
 }
 
-void udpateCartesian(Vector2d &v) {
-  v.dx = v.m * cos(v.a);
-  v.dy = v.m * sin(v.a);
+Cartesian2d toCartesian(Circular2d &ci) {
+  Cartesian2d ca;
+  ca.x = ci.m * cos(ci.a);
+  ca.y = ci.m * sin(ci.a);
+  return ca;
 }

@@ -4,7 +4,9 @@
 
 #include "geometry/basic-math.h"
 
-void rotate(Point2d &p, const Point2d &c, float angle) {
-  p.x += distance(p, c) * cos(p.a + angle);
-  p.y += distance(p, c) * sin(p.a + angle);
+void rotate(Point2d &p, const Point2d &c, float a) {
+  float dist = distance(p, c);
+  float newAngle = angle(cBasisH, p - c) + a;
+  p.x = c.x + dist * cos(newAngle);
+  p.y = c.y + dist * sin(newAngle);
 }

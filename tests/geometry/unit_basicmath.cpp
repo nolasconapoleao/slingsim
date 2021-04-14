@@ -34,10 +34,10 @@ TEST_CASE("Vector multiplication", "[geometry][Vector math]") {
 
 TEST_CASE("Angle calculation", "[geometry][angle]") {
   REQUIRE(angle(cVNull, cVNull) == 0);
-  REQUIRE(abs(angle(cVNull, cV1) - cPi / 4.0f) < cTolerance);
+  REQUIRE(equals(angle(cVNull, cV1), cPi / 4.0f));
 
   REQUIRE(angle(cP1, cPOrig, cP1) == 0);
-  REQUIRE(abs(angle(cP1, cPOrig, cP2) - cPi / 4.0f) < cTolerance);
+  REQUIRE(equals(angle(cP1, cPOrig, cP2), cPi / 4.0f));
 }
 
 TEST_CASE("Distance calculation", "[geometry][distance]") {
@@ -59,13 +59,13 @@ TEST_CASE("Dot product", "[geometry][Dot product]") {
 }
 
 TEST_CASE("Coordinate conversion", "[geometry][conversion]") {
-  Vector2d cartesian{1, 0};
-  udpateCircular(cartesian);
-  REQUIRE(cartesian.m == 1);
-  REQUIRE(abs(cartesian.a - cPi / 2.0f) < cTolerance);
+  Cartesian2d ca{1, 0};
+  Circular2d ci = toCircular(ca);
+  REQUIRE(ci.m == 1);
+  REQUIRE(equals(abs(ci.a), 0));
 
-  Vector2d circular{0, 0, 1, 0};
-  udpateCartesian(circular);
-  REQUIRE(circular.dx == 1);
-  REQUIRE(circular.dy == 0);
+  Circular2d ci2{1, 0};
+  Cartesian2d ca2 = toCartesian(ci2);
+  REQUIRE(ca2.x == 1);
+  REQUIRE(ca2.y == 0);
 }

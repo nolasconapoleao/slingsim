@@ -4,6 +4,8 @@
 #include "math.h"
 
 void scale(Point2d &p, const Point2d &s, float factor) {
-  p.x = s.x + distance(p, s) * factor * cos(angle(p - s, cBasisH));
-  p.y = s.y + distance(p, s) * factor * sin(angle(p - s, cBasisH));
+  float dist = distance(p, s) * factor;
+  float newAngle = angle(cBasisH, p - s);
+  p.x = s.x + dist * factor * cos(newAngle);
+  p.y = s.y + dist * factor * sin(newAngle);
 }
