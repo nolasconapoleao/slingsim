@@ -26,6 +26,11 @@ TEST_CASE("Point summation", "[geometry][Point-Vector math]") {
   REQUIRE(equals(cP1 + cVNull, cP1));
 }
 
+TEST_CASE("Vector summation", "[geometry][Vector math]") {
+  REQUIRE(equals(cV1 + cV4, cVNull));
+  REQUIRE(equals(cVNull + cVNull, cVNull));
+}
+
 TEST_CASE("Vector multiplication", "[geometry][Vector math]") {
   REQUIRE(equals(cVNull * 2.0f, cVNull));
   REQUIRE(equals(cV1 * 0.0f, cVNull));

@@ -1,16 +1,8 @@
-#pragma once
-
 #include "input/mouse.h"
 
-#include "game-settings.h"
+#include "input/remap-utils.h"
 
 namespace input {
-/**
- * @brief Remaps the coordinates of the key event.
- *
- * @param event flipped vertically
- */
-void remap(MouseEvent event);
 
 MouseEvent captureMouseEvent(int key, int pressed, int x, int y) {
   MouseKeyCode code;
@@ -32,14 +24,8 @@ MouseEvent captureMouseEvent(int key, int pressed, int x, int y) {
       break;
   }
 
-  MouseEvent event{code, pressed, x, y};
-  remap(event);
-  return event;
-}
-
-void remap(MouseEvent event) {
-  event.x = float(cWindowWidth - event.x) / cWindowWidth;
-  event.x = float(cWindowHeight - event.y) / cWindowHeight;
+  Point2d p = toPixel(x, y);
+  return MouseEvent{code, pressed == 1, p};
 }
 
 }; // namespace input

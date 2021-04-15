@@ -1,5 +1,3 @@
-#pragma once
-
 #include "input/keyboard.h"
 
 #include <GL/glut.h>
@@ -26,7 +24,7 @@ KeyEvent captureArrowEvent(int key, int x, int y) {
       break;
   }
 
-  return KeyEvent{code, x, y};
+  return KeyEvent{code, Point2d{float(x), float(y)}};
 }
 
 KeyEvent captureKeyEvent(unsigned char key, int x, int y) {
@@ -52,7 +50,7 @@ KeyEvent captureKeyEvent(unsigned char key, int x, int y) {
       break;
   }
 
-  return KeyEvent{code, x, y};
+  return KeyEvent{code, Point2d{float(x), float(y)}};
 }
 
 }; // namespace input

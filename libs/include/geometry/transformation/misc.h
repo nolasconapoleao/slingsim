@@ -25,3 +25,12 @@ void flipVertical(Point2d &p, float yAxis);
  * @param line reference for flip
  */
 void flipLine(Point2d &p, const Line2d &line);
+
+/**
+ * @brief Normalizes the coordinates using the limits defined.
+ *
+ * @param point to normalize
+ * @param orig bottom left limit
+ * @param limit top right limit
+ */
+void normalize(Point2d &point, const Point2d &orig, const Point2d &limit);

@@ -14,6 +14,10 @@ Vector2d operator*(const Vector2d &v, float multiplier) {
   return Vector2d{multiplier * v.dx, multiplier * v.dy};
 }
 
+Vector2d operator+(const Vector2d &v1, const Vector2d &v2) {
+  return Vector2d{v1.dx + v2.dx, v1.dy + v2.dy};
+}
+
 float angle(const Vector2d &v1, const Vector2d &v2) {
   float dot = v1.dx * v2.dx + v1.dy * v2.dy;
   float det = v1.dx * v2.dy - v1.dy * v2.dx;
