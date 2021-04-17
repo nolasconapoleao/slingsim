@@ -17,14 +17,14 @@ enum class MouseKeyCode { LEFT, MIDDLE, RIGHT, SCROLL_UP, SCROLL_DOWN };
 
 struct KeyEvent {
   KeyCode code;
-  float x;
-  float y;
+  int x;
+  int y;
   bool pressed;
 };
 
 struct MouseEvent {
   MouseKeyCode code;
-  float x;
-  float y;
+  int x;
+  int y;
   bool pressed;
 };
