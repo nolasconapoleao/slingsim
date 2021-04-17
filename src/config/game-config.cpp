@@ -5,18 +5,26 @@
 #include <math.h>
 
 #include "game-settings.h"
+#include "geometry/basic-math.h"
+#include "geometry/transformation/misc.h"
+#include "geometry/transformation/rotation.h"
 #include "graphics/draw.h"
+#include "input/remap-utils.h"
+
+Point2d ball{0.5, 0.5};
+Vector2d v{0, 0};
+Vector2d a{0, 0};
 
 constexpr float radius = 0.02;
 
+bool mousePressed = false, trace = false;
+bool ctrlToogled = false, altToogled = false, shiftToogled = false;
+Point2d drag, drop, hover;
+
 float step = 0.01;
-constexpr float xC = 0.5, yC = 0.5;
-float vY = 0, aY = -0.005;
-float vX = 0, aX = 0.0;
-constexpr auto amortizationCoef = 0.8;
+auto amortizationCoef = 1.0;
 
 Colour color;
-Circle2d ball{Point2d{xC, yC}, radius};
 
 void updateColor() {
   color.r = (float)((rand() % 9)) / 8;
@@ -28,67 +36,91 @@ void handleKeyPress(int key, int, int) {
   std::cout << "key: " << key << "\n";
   switch (key) {
     case GLUT_KEY_UP:
-      vY += step;
+      v.dy += step;
       break;
     case GLUT_KEY_DOWN:
-      vY -= step;
+      v.dy -= step;
       break;
     case GLUT_KEY_LEFT:
-      vX -= step;
+      v.dx -= step;
       break;
     case GLUT_KEY_RIGHT:
-      vX += step;
+      v.dx += step;
+      break;
+    case GLUT_KEY_CTRL_L:
+      ctrlToogled = !ctrlToogled;
+      break;
+    case GLUT_KEY_ALT_L:
+      altToogled = !altToogled;
+      break;
+    case GLUT_KEY_SHIFT_L:
+      shiftToogled = !shiftToogled;
+      break;
+    case GLUT_KEY_CTRL_R:
+      trace = !trace;
       break;
   }
 }
 
-int xDrag, yDrag;
-int xDrop, yDrop;
-void handleClick(int key, int state, int x, int y) {
-  std::cout << "x: " << x << " ,y: " << y << "\n";
-  if (key != 0 && state == 0) {
-    ball.center.x = float(x) / cWindowWidth;
-    ball.center.y = float(cWindowHeight - y) / cWindowHeight;
+void handleHover(int x, int y) {
+  hover = toPixel(x, y);
+}
+
+void handleClick(int key, int released, int x, int y) {
+  std::cout << "key: " << key << "x: " << x << " ,y: " << y << "\n";
+  Point2d p = toPixel(x, y);
+
+  mousePressed = (released == 0);
+  if (released == 0) {
+    drag = p;
+    return;
   }
 
-  if (key == 0) {
-    if (state == 0) {
-      xDrag = x;
-      yDrag = y;
-    } else {
-      xDrop = x;
-      yDrop = y;
-      vX = float(xDrop - xDrag) / cWindowWidth;
-      vY = float(yDrag - yDrop) / cWindowHeight;
-    }
+  drop = p;
+  switch (key) {
+    case 0:
+      v = drop - drag;
+      break;
+    case 1:
+      ball = p;
+      break;
+    case 2:
+      flipLine(ball, Line2d{drag, drop});
+      break;
   }
 }
 
 void updatePosition() {
-  if (ball.center.y < radius) {
-    vY *= -amortizationCoef;
-    ball.center.y = radius;
+  if (ball.y < radius) {
+    v.dy *= -amortizationCoef;
+    ball.y = radius;
     updateColor();
-  } else if (ball.center.y > 1 - radius) {
-    vY *= -amortizationCoef;
-    ball.center.y = 1 - radius;
-    updateColor();
-  }
-
-  if (ball.center.x < radius) {
-    vX *= -amortizationCoef;
-    ball.center.x = radius;
-    updateColor();
-  } else if (ball.center.x > 1 - radius) {
-    vX *= -amortizationCoef;
-    ball.center.x = 1 - radius;
+  } else if (ball.y > 1 - radius) {
+    v.dy *= -amortizationCoef;
+    ball.y = 1 - radius;
     updateColor();
   }
 
-  ball.center.y += vY;
-  vY += aY;
-  ball.center.x += vX;
-  vX += aX;
+  if (ball.x < radius) {
+    v.dx *= -amortizationCoef;
+    ball.x = radius;
+    updateColor();
+  } else if (ball.x > 1 - radius) {
+    v.dx *= -amortizationCoef;
+    ball.x = 1 - radius;
+    updateColor();
+  }
+
+  if (altToogled) {
+    rotate(ball, hover, 0.1);
+  }
+
+  a.dy = (ctrlToogled ? 0 : -0.005);
+
+  amortizationCoef = (shiftToogled ? 1.0 : 0.8);
+
+  ball = ball + v;
+  v = v + a;
 }
 
 void reshape(int width, int height) {
@@ -107,17 +139,21 @@ void reshape(int width, int height) {
 }
 
 void display() {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
+  if (!trace) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+  }
 
-  draw(ball, color);
+  draw(Circle2d{Point2d{ball.x, ball.y}, radius}, color);
+  if (mousePressed) {
+    draw(Line2d{drag, hover}, colour::Red);
+  }
 
   glFlush();
   glutSwapBuffers();
 }
 
 // TODO: Code above should be replaced by library calls
-
 void looper(int) {
   updatePosition();
 
@@ -126,6 +162,8 @@ void looper(int) {
 }
 
 void loadinput() {
+  glutMotionFunc(handleHover);
+  glutPassiveMotionFunc(handleHover);
   glutMouseFunc(handleClick);
   glutSpecialFunc(handleKeyPress);
 }

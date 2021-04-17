@@ -1,5 +1,3 @@
-#pragma once
-
 #include "graphics/draw.h"
 
 #ifdef _WIN64
@@ -43,14 +41,14 @@ void draw(const Poligon2d &poligon, const Colour &colour) {
 void draw(const Circle2d &circle, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   glBegin(GL_TRIANGLES);
-  float x = circle.radius, y = 0;
+  float x = circle.r, y = 0;
   for (double i = 0; i <= 360;) {
-    glVertex2f(x + circle.center.x, y + circle.center.y);
+    glVertex2f(x + circle.c.x, y + circle.c.y);
     i = i + .5;
-    x = circle.radius * cos(i);
-    y = circle.radius * sin(i);
-    glVertex2f(x + circle.center.x, y + circle.center.y);
-    glVertex2f(circle.center.x, circle.center.y);
+    x = circle.r * cos(i);
+    y = circle.r * sin(i);
+    glVertex2f(x + circle.c.x, y + circle.c.y);
+    glVertex2f(circle.c.x, circle.c.y);
   }
   glEnd();
 }

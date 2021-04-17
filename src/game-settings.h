@@ -1,6 +1,6 @@
 #pragma once
 
-auto cWindowWidth = 1920;
-auto cWindowHeight = 1080;
+static auto cWindowWidth = 1920;
+static auto cWindowHeight = 1080;
 
 constexpr int FPS = 30;

@@ -30,7 +30,7 @@ add_subdirectory(src)
 
 # Link project libraries
 find_package(OpenGL REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES} Custom::libsample Input::input Graphics::graphics2d)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES} Geometry::geometry Graphics::graphics2d Input::input)
 
 if(ENABLE_TESTS)
   message("## Enable unit tests target")
