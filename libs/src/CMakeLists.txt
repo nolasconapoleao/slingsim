@@ -1,3 +1,3 @@
 add_subdirectory(graphics)
-add_subdirectory(libsample)
 add_subdirectory(input)
+add_subdirectory(libsample)

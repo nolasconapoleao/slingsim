@@ -2,6 +2,10 @@
 
 #include "graphics/draw.h"
 
+#ifdef _WIN64
+    #include "Windows.h"
+#endif
+
 #include <GL/gl.h>
 #include <math.h>
 
