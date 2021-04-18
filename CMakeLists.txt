@@ -37,6 +37,7 @@ target_link_libraries(
          Graphics::graphics2d
          Input::input
          Physics::physics
+         Random::random
 )
 
 if(ENABLE_TESTS)

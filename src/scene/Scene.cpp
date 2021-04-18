@@ -1,8 +1,6 @@
 #include "Scene.h"
 
-Point2d rngPosition() {
-  return Point2d{(float)((rand() % 50)) / 50, (float)((rand() % 50)) / 50};
-}
+#include "random/random.h"
 
 Scene::Scene() {
   for (auto k = 0; k < 10; k++) {
@@ -13,15 +11,15 @@ Scene::Scene() {
 }
 
 void Scene::generateBall() {
-  balls.emplace(id++, Ball(rngPosition()));
+  balls.emplace(id++, Ball(rng::position()));
 }
 
 void Scene::generateParticle() {
-  particles.emplace(id++, Particle(rngPosition()));
+  particles.emplace(id++, Particle(rng::position()));
 }
 
 void Scene::generatePlanetes() {
-  planetes.emplace(id++, Planetes(rngPosition()));
+  planetes.emplace(id++, Planetes(rng::position()));
 }
 
 void Scene::run() {

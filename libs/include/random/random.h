@@ -5,7 +5,7 @@
 
 namespace rng {
 float angle();
-float number();
+float decimal();
 Point2d position();
 Colour colour();
 } // namespace rng

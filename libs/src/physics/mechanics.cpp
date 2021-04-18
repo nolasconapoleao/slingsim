@@ -4,6 +4,7 @@
 #include "geometry/collision/border.h"
 #include "geometry/transformation/misc.h"
 #include "geometry/transformation/rotation.h"
+#include "random/random.h"
 
 using namespace collision;
 
@@ -45,10 +46,7 @@ void idle(PointObj2d &obj) {
 void randomWalk(PointObj2d &obj) {
   const auto rng = rand() % 25;
   if (rng == 0) {
-    const auto randAngle = (rand() % 360);
-    // TODO(nn): Make this a function
-    const auto radian = (randAngle - 180) / 180.0f * cPi;
-    const Circular2d circular{modulus(obj.v), radian};
+    const Circular2d circular{modulus(obj.v), rng::angle()};
     const auto newVel = toCartesian(circular);
     obj.v = Vector2d{newVel.x, newVel.y};
   }

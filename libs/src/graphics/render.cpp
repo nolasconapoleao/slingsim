@@ -52,11 +52,3 @@ void render(const Circle2d &circle, const Colour &colour) {
   }
   glEnd();
 }
-
-Colour randomColour() {
-  Colour color;
-  color.r = (float)((rand() % 9)) / 8;
-  color.g = (float)((rand() % 9)) / 8;
-  color.b = (float)((rand() % 9)) / 8;
-  return color;
-}

@@ -4,10 +4,11 @@
 #include "geometry/collision/border.h"
 #include "graphics/render.h"
 #include "physics/mechanics.h"
+#include "random/random.h"
 
 Ball::Ball(const Point2d &p) {
   obj = PointObj2d{p, cBasisH * cStep, cNull, 1.0, 0.005};
-  color = randomColour();
+  color = rng::colour();
 }
 
 void Ball::draw() const {
@@ -25,5 +26,5 @@ void Ball::move() {
 
 void Ball::handleBorderCollision() {
   reflect(obj);
-  color = randomColour();
+  color = rng::colour();
 }

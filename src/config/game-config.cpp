@@ -12,6 +12,7 @@
 #include "graphics/render.h"
 #include "input/remap-utils.h"
 #include "physics/mechanics.h"
+#include "random/random.h"
 #include "scene/Scene.h"
 
 Scene scene;
@@ -108,7 +109,7 @@ void updatePosition() {
     if (collisionToogle) {
       teleport(ball);
     } else {
-      color = randomColour();
+      color = rng::colour();
       reflect(ball);
     }
   }
