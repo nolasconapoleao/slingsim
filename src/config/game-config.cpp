@@ -9,9 +9,12 @@
 #include "geometry/collision/border.h"
 #include "geometry/transformation/misc.h"
 #include "geometry/transformation/rotation.h"
-#include "graphics/draw.h"
+#include "graphics/render.h"
 #include "input/remap-utils.h"
 #include "physics/mechanics.h"
+#include "scene/Scene.h"
+
+Scene scene;
 
 constexpr Point2d p{0.5, 0.5};
 constexpr Vector2d v{0, 0};
@@ -31,12 +34,6 @@ short moveToogle;
 Point2d drag, drop, hover;
 
 Colour color;
-
-void updateColor() {
-  color.r = (float)((rand() % 9)) / 8;
-  color.g = (float)((rand() % 9)) / 8;
-  color.b = (float)((rand() % 9)) / 8;
-}
 
 void handleKeyPress(int key, int, int) {
   std::cout << "key: " << key << "\n";
@@ -105,12 +102,13 @@ void handleClick(int key, int released, int x, int y) {
 }
 
 void updatePosition() {
+  scene.run();
   Circle2d circle{ball.p, ball.r};
   if (collision::outside(circle)) {
     if (collisionToogle) {
       teleport(ball);
     } else {
-      updateColor();
+      color = randomColour();
       reflect(ball);
     }
   }
@@ -152,10 +150,11 @@ void display() {
     glLoadIdentity();
   }
 
-  draw(Circle2d{ball.p, ball.r}, color);
-  draw(Circle2d{hover, 0.005}, colour::Green);
+  scene.draw();
+  render(Circle2d{ball.p, ball.r}, color);
+  render(Circle2d{hover, 0.005}, colour::Green);
   if (mousePressed) {
-    draw(Line2d{drag, hover}, colour::Red);
+    render(Line2d{drag, hover}, colour::Red);
   }
 
   glFlush();

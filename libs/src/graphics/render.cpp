@@ -1,20 +1,20 @@
-#include "graphics/draw.h"
+#include "graphics/render.h"
 
 #ifdef _WIN64
-    #include "Windows.h"
+#include "Windows.h"
 #endif
 
 #include <GL/gl.h>
 #include <math.h>
 
-void draw(const Point2d &point, const Colour &colour) {
+void render(const Point2d &point, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   glBegin(GL_POINTS);
   glVertex2f(point.x, point.y);
   glEnd();
 }
 
-void draw(const Triangle2d &triangle, const Colour &colour) {
+void render(const Triangle2d &triangle, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   glBegin(GL_TRIANGLES);
   glVertex2f(triangle[0].x, triangle[0].y);
@@ -23,7 +23,7 @@ void draw(const Triangle2d &triangle, const Colour &colour) {
   glEnd();
 }
 
-void draw(const Line2d &line, const Colour &colour) {
+void render(const Line2d &line, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   glBegin(GL_LINES);
   glVertex2f(line[0].x, line[0].y);
@@ -31,14 +31,14 @@ void draw(const Line2d &line, const Colour &colour) {
   glEnd();
 }
 
-void draw(const Poligon2d &poligon, const Colour &colour) {
+void render(const Poligon2d &poligon, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   for (const auto &triangle : poligon) {
-    draw(triangle, colour);
+    render(triangle, colour);
   }
 }
 
-void draw(const Circle2d &circle, const Colour &colour) {
+void render(const Circle2d &circle, const Colour &colour) {
   glColor3f(colour.r, colour.g, colour.b);
   glBegin(GL_TRIANGLES);
   float x = circle.r, y = 0;
@@ -51,4 +51,12 @@ void draw(const Circle2d &circle, const Colour &colour) {
     glVertex2f(circle.c.x, circle.c.y);
   }
   glEnd();
+}
+
+Colour randomColour() {
+  Colour color;
+  color.r = (float)((rand() % 9)) / 8;
+  color.g = (float)((rand() % 9)) / 8;
+  color.b = (float)((rand() % 9)) / 8;
+  return color;
 }

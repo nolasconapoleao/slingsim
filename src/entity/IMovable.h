@@ -6,6 +6,7 @@
 class IMovable {
 public:
   virtual void move() = 0;
+  virtual void handleBorderCollision() = 0;
 
 protected:
   PointObj2d object;
