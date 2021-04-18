@@ -24,6 +24,6 @@ KeyEvent captureArrowEvent(int key, int x, int y);
  * @param y mouse vertical position during key press
  * @return KeyEvent captured
  */
-KeyEvent captureKeyEvent(unsigned char key, int x, int y);
+void captureKeyEvent(unsigned char key, int x, int y);
 
 }; // namespace input

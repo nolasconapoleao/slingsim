@@ -6,3 +6,6 @@
 [submodule "tools/cmake"]
 	path = tools/cmake
 	url = https://github.com/nolasconapoleao/cmake-lib.git
+[submodule "external/glew"]
+	path = external/glew
+	url = https://github.com/Perlmint/glew-cmake.git
