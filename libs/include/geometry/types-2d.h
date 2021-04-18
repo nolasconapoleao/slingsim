@@ -56,4 +56,6 @@ constexpr Vector2d cBasisH{1, 0};
 /// @brief Vertical basis.
 constexpr Vector2d cBasisV{0, 1};
 
+constexpr Vector2d cNull{0, 0};
+
 constexpr Point2d cOrig{0, 0};

@@ -6,23 +6,29 @@
 
 #include "game-settings.h"
 #include "geometry/basic-math.h"
+#include "geometry/collision/border.h"
 #include "geometry/transformation/misc.h"
 #include "geometry/transformation/rotation.h"
 #include "graphics/draw.h"
 #include "input/remap-utils.h"
+#include "physics/mechanics.h"
 
-Point2d ball{0.5, 0.5};
-Vector2d v{0, 0};
-Vector2d a{0, 0};
-
+constexpr Point2d p{0.5, 0.5};
+constexpr Vector2d v{0, 0};
+constexpr Vector2d a{0, 0};
+constexpr float mass = 1.0;
 constexpr float radius = 0.02;
 
-bool mousePressed = false, trace = false;
-bool ctrlToogled = false, altToogled = false, shiftToogled = false;
-Point2d drag, drop, hover;
+float amortizationCoef = 1.0;
+float cWindowWidth = 1920;
+float cWindowHeight = 1080;
 
-float step = 0.01;
-auto amortizationCoef = 1.0;
+PointObj2d ball{p, v, a, mass, radius};
+
+bool mousePressed, traceToogle, collisionToogle;
+bool gravityToogle, dampingToogle;
+short moveToogle;
+Point2d drag, drop, hover;
 
 Colour color;
 
@@ -36,28 +42,32 @@ void handleKeyPress(int key, int, int) {
   std::cout << "key: " << key << "\n";
   switch (key) {
     case GLUT_KEY_UP:
-      v.dy += step;
+      addForce(ball, cBasisV * cStep);
       break;
     case GLUT_KEY_DOWN:
-      v.dy -= step;
-      break;
-    case GLUT_KEY_LEFT:
-      v.dx -= step;
+      addForce(ball, cBasisV * -cStep);
       break;
     case GLUT_KEY_RIGHT:
-      v.dx += step;
+      addForce(ball, cBasisH * cStep);
+      break;
+    case GLUT_KEY_LEFT:
+      addForce(ball, cBasisH * -cStep);
       break;
     case GLUT_KEY_CTRL_L:
-      ctrlToogled = !ctrlToogled;
+      gravityToogle = !gravityToogle;
       break;
     case GLUT_KEY_ALT_L:
-      altToogled = !altToogled;
+      moveToogle++;
+      moveToogle %= 3;
       break;
     case GLUT_KEY_SHIFT_L:
-      shiftToogled = !shiftToogled;
+      dampingToogle = !dampingToogle;
       break;
     case GLUT_KEY_CTRL_R:
-      trace = !trace;
+      traceToogle = !traceToogle;
+      break;
+    case GLUT_KEY_SHIFT_R:
+      collisionToogle = !collisionToogle;
       break;
   }
 }
@@ -79,48 +89,46 @@ void handleClick(int key, int released, int x, int y) {
   drop = p;
   switch (key) {
     case 0:
-      v = drop - drag;
+      if (modulus(drag - drop) < cStep) {
+        ball.v = cNull;
+      } else {
+        addMomentum(ball, drop - drag);
+      }
       break;
     case 1:
-      ball = p;
+      ball.p = p;
       break;
     case 2:
-      flipLine(ball, Line2d{drag, drop});
+      flipLine(ball.p, Line2d{drag, drop});
       break;
   }
 }
 
 void updatePosition() {
-  if (ball.y < radius) {
-    v.dy *= -amortizationCoef;
-    ball.y = radius;
-    updateColor();
-  } else if (ball.y > 1 - radius) {
-    v.dy *= -amortizationCoef;
-    ball.y = 1 - radius;
-    updateColor();
+  Circle2d circle{ball.p, ball.r};
+  if (collision::outside(circle)) {
+    if (collisionToogle) {
+      teleport(ball);
+    } else {
+      updateColor();
+      reflect(ball);
+    }
   }
 
-  if (ball.x < radius) {
-    v.dx *= -amortizationCoef;
-    ball.x = radius;
-    updateColor();
-  } else if (ball.x > 1 - radius) {
-    v.dx *= -amortizationCoef;
-    ball.x = 1 - radius;
-    updateColor();
+  if (moveToogle == 0) {
+    ball.r = radius;
+    idle(ball);
+  } else if (moveToogle == 1) {
+    ball.r = radius;
+    orbit(ball, hover);
+  } else {
+    ball.r = 0.005;
+    randomWalk(ball);
   }
 
-  if (altToogled) {
-    rotate(ball, hover, 0.1);
-  }
+  ball.a.dy = (gravityToogle ? 0 : -0.005);
 
-  a.dy = (ctrlToogled ? 0 : -0.005);
-
-  amortizationCoef = (shiftToogled ? 1.0 : 0.8);
-
-  ball = ball + v;
-  v = v + a;
+  amortizationCoef = (dampingToogle ? 1.0 : 0.8);
 }
 
 void reshape(int width, int height) {
@@ -139,12 +147,13 @@ void reshape(int width, int height) {
 }
 
 void display() {
-  if (!trace) {
+  if (!traceToogle) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
   }
 
-  draw(Circle2d{Point2d{ball.x, ball.y}, radius}, color);
+  draw(Circle2d{ball.p, ball.r}, color);
+  draw(Circle2d{hover, 0.005}, colour::Green);
   if (mousePressed) {
     draw(Line2d{drag, hover}, colour::Red);
   }
