@@ -2,9 +2,11 @@
 
 #include <GL/glut.h>
 
+#include "database/InputDb.h"
+
 namespace input {
 
-KeyEvent captureArrowEvent(int key, int x, int y) {
+void captureArrowEvent(int key, int x, int y) {
   KeyCode code;
   switch (key) {
     case GLUT_KEY_UP:
@@ -24,10 +26,10 @@ KeyEvent captureArrowEvent(int key, int x, int y) {
       break;
   }
 
-  return KeyEvent{code, Point2d{float(x), float(y)}};
+  InputDb::keyEvents.emplace_back(KeyEvent{code, Point2d{float(x), float(y)}});
 }
 
-KeyEvent captureKeyEvent(unsigned char key, int x, int y) {
+void captureKeyEvent(unsigned char key, int x, int y) {
   KeyCode code;
   switch (key) {
     case 'w':
@@ -50,7 +52,7 @@ KeyEvent captureKeyEvent(unsigned char key, int x, int y) {
       break;
   }
 
-  return KeyEvent{code, Point2d{float(x), float(y)}};
+  InputDb::keyEvents.emplace_back(KeyEvent{code, Point2d{float(x), float(y)}});
 }
 
 }; // namespace input

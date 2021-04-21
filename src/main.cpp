@@ -1,7 +1,7 @@
-#include "config/game-config.h"
+#include "config/simulation.h"
 
 int main() {
-  initGame();
+  initSimulation();
 
   return 0;
 }

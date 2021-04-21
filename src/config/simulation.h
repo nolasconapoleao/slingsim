@@ -1,6 +1,6 @@
 #pragma once
 
-void initGame();
+void initSimulation();
 
 void loadinput();
 void loadRenderer();

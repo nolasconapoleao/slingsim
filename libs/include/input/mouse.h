@@ -12,8 +12,15 @@ namespace input {
  * @param pressed true means pressed, false means released
  * @param x mouse horizontal position during key press
  * @param y mouse vertical position during key press
- * @return MouseEvent captured
  */
-MouseEvent captureMouseEvent(int key, int pressed, int x, int y);
+void captureMouseEvent(int key, int pressed, int x, int y);
+
+/**
+ * @brief Capture hover over screen event.
+ *
+ * @param x mouse horizontal position during hover
+ * @param y mouse vertical position during hover
+ */
+void captureHover(int x, int y);
 
 }; // namespace input

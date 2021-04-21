@@ -1,5 +1,6 @@
 #include "Planetes.h"
 
+#include "database/InputDb.h"
 #include "geometry/basic-math.h"
 #include "geometry/collision/border.h"
 #include "graphics/render.h"
@@ -16,8 +17,7 @@ void Planetes::draw() const {
 }
 
 void Planetes::move() {
-  // TODO (nn): Orbit mouse position
-  orbit(obj, Point2d{0.5, 0.5});
+  orbit(obj, InputDb::hover);
 }
 
 void Planetes::handleBorderCollision() {

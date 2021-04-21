@@ -2,4 +2,4 @@
 
 constexpr float cStep = 0.01;
 constexpr float cEarthGravity = 9.8;
-extern float amortizationCoef;
+constexpr float amortizationCoef = 1.0;

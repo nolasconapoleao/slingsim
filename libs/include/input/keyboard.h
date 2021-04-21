@@ -11,9 +11,8 @@ namespace input {
  * @param key code for pressed key
  * @param x mouse horizontal position during key press
  * @param y mouse vertical position during key press
- * @return KeyEvent captured
  */
-KeyEvent captureArrowEvent(int key, int x, int y);
+void captureArrowEvent(int key, int x, int y);
 
 /**
  * @brief Captures keyboard press event.
@@ -22,8 +21,7 @@ KeyEvent captureArrowEvent(int key, int x, int y);
  * @param key code for pressed key
  * @param x mouse horizontal position during key press
  * @param y mouse vertical position during key press
- * @return KeyEvent captured
  */
-KeyEvent captureKeyEvent(unsigned char key, int x, int y);
+void captureKeyEvent(unsigned char key, int x, int y);
 
 }; // namespace input

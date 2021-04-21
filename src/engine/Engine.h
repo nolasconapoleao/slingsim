@@ -1,25 +1,27 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
+#include "database/Scene.h"
+#include "entity/Ball.h"
+#include "geometry/types.h"
 #include "input/events.h"
-#include "mouse/MouseState.h"
-#include "scene/Scene.h"
 
 class Engine {
 public:
-  void loadKeyInput(const KeyEvent &key);
-  void loadouseInput(const MouseEvent &mouse);
-
+  Engine();
   void processInputs();
   void updateEntities();
   void handleInteractions();
-  void renderScene();
+  void renderScene() const;
 
 private:
-  EntityId selectedBall;
-  EntityId activeBall;
+  void processKeyPress(const KeyEvent &event);
+  void processMouseClick(const MouseEvent &event);
 
-  std::vector<KeyEvent> keyEvents;
-  MouseState mouseState;
+  void destroySelected();
+
+  std::shared_ptr<Ball> selectedEntity;
+  Scene scene;
 };
