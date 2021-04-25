@@ -10,36 +10,35 @@ constexpr Point2d cP2{0, 0.5};
 constexpr Point2d cP3{0.3, 0.4};
 constexpr Point2d cP4{1, 0};
 
-constexpr Vector2d cVNull{0, 0};
 constexpr Vector2d cV1{0.5, 0};
 constexpr Vector2d cV2{0, 0.5};
 constexpr Vector2d cV3{1, 0};
 constexpr Vector2d cV4{-0.5, 0};
 
 TEST_CASE("Point subtraction", "[geometry][Point math]") {
-  REQUIRE(equals(cP1 - cP1, cVNull));
+  REQUIRE(equals(cP1 - cP1, cNull));
   REQUIRE(equals(cP1 - cPOrig, cV1));
 }
 
 TEST_CASE("Point summation", "[geometry][Point-Vector math]") {
   REQUIRE(equals(cPOrig + cV1, cP1));
-  REQUIRE(equals(cP1 + cVNull, cP1));
+  REQUIRE(equals(cP1 + cNull, cP1));
 }
 
 TEST_CASE("Vector summation", "[geometry][Vector math]") {
-  REQUIRE(equals(cV1 + cV4, cVNull));
-  REQUIRE(equals(cVNull + cVNull, cVNull));
+  REQUIRE(equals(cV1 + cV4, cNull));
+  REQUIRE(equals(cNull + cNull, cNull));
 }
 
 TEST_CASE("Vector multiplication", "[geometry][Vector math]") {
-  REQUIRE(equals(cVNull * 2.0f, cVNull));
-  REQUIRE(equals(cV1 * 0.0f, cVNull));
+  REQUIRE(equals(cNull * 2.0f, cNull));
+  REQUIRE(equals(cV1 * 0.0f, cNull));
   REQUIRE(equals(cV1 * 2.0f, cV3));
 }
 
 TEST_CASE("Angle calculation", "[geometry][angle]") {
-  REQUIRE(angle(cVNull, cVNull) == 0);
-  REQUIRE(equals(angle(cVNull, cV1), cPi / 4.0f));
+  REQUIRE(angle(cNull, cNull) == 0);
+  REQUIRE(equals(angle(cNull, cV1), cPi / 4.0f));
 
   REQUIRE(angle(cP1, cPOrig, cP1) == 0);
   REQUIRE(equals(angle(cP1, cPOrig, cP2), cPi / 4.0f));

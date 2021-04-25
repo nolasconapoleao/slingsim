@@ -1,11 +1,14 @@
 #pragma once
 
+#include "constants.h"
 #include "types.h"
 
-void operator+(PointObj2d &obj, const Vector2d &force) {
+void addForce(PointObj2d &obj, const Vector2d &force);
+void addMomentum(PointObj2d &obj, const Vector2d &momentum);
 
-  void transferMomentum(PointObj2d & obj, float momentum);
+void reflect(PointObj2d &obj);
+void teleport(PointObj2d &obj);
 
-  void teleport(PointObj2d & obj, float momentum);
-
-  void move(PointObj2d & obj);
+void idle(PointObj2d &obj);
+void randomWalk(PointObj2d &obj);
+void orbit(PointObj2d &obj, Point2d center);

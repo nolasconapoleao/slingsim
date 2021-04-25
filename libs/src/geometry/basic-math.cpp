@@ -11,7 +11,11 @@ Point2d operator+(const Point2d &p, const Vector2d &v) {
 }
 
 Vector2d operator*(const Vector2d &v, float multiplier) {
-  return Vector2d{multiplier * v.dx, multiplier * v.dy};
+  return Vector2d{v.dx * multiplier, v.dy * multiplier};
+}
+
+Vector2d operator/(const Vector2d &v, float divider) {
+  return Vector2d{v.dx / divider, v.dy / divider};
 }
 
 Vector2d operator+(const Vector2d &v1, const Vector2d &v2) {
@@ -26,6 +30,10 @@ float angle(const Vector2d &v1, const Vector2d &v2) {
 
 float angle(const Point2d &a, const Point2d &b, const Point2d &c) {
   return angle(a - b, c - b);
+}
+
+float modulus(const Vector2d &v) {
+  return sqrt(pow(v.dx, 2) + pow(v.dy, 2));
 }
 
 float distance(const Point2d &a, const Point2d &b) {
@@ -51,14 +59,14 @@ float dotProduct(const Vector2d &a, const Vector2d &b) {
   return a.dx * b.dy + b.dx * a.dy;
 }
 
-Circular2d toCircular(Cartesian2d &ca) {
+Circular2d toCircular(const Cartesian2d &ca) {
   Circular2d ci;
   ci.m = sqrt(pow(ca.x, 2) + pow(ca.y, 2));
   ci.a = atan2(ca.y, ca.x);
   return ci;
 }
 
-Cartesian2d toCartesian(Circular2d &ci) {
+Cartesian2d toCartesian(const Circular2d &ci) {
   Cartesian2d ca;
   ca.x = ci.m * cos(ci.a);
   ca.y = ci.m * sin(ci.a);

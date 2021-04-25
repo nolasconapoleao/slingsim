@@ -5,7 +5,7 @@
 
 class Portal : public IEntity {
 public:
-  void draw() override;
+  void draw() const override;
 
 private:
   Line2d portal;
