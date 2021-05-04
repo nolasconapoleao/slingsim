@@ -30,6 +30,7 @@ add_subdirectory(src)
 
 # Link project libraries
 find_package(OpenGL REQUIRED)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES} Geometry::geometry Graphics::graphics2d Input::input)
 
 if(ENABLE_TESTS)
@@ -47,9 +48,11 @@ if(WIN32)
     OUTPUT "${CMAKE_BINARY_DIR}/Dependencies"
     COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:freeglut>"
             "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:freeglut>"
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:libglew_shared>"
+            "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:libglew_shared>"
     COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:slingsim>"
             "${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:slingsim>"
-    DEPENDS freeglut slingsim
+    DEPENDS freeglut libglew_shared slingsim
     VERBATIM
   )
 endif()
